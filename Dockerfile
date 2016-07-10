@@ -6,7 +6,8 @@ MAINTAINER John Nelson <jbn@abreka.com>
 # useful for testing. To change this, pass
 #     --build-arg PBF=your.pbf
 # to the `docker build`.
-ARG PBF=monaco-latest.osm.pbf
+ARG PBF=planet-latest.osm.pbf
+ARC CACHE=60000
 
 # Install nessessary package dependencies for Nominatim.
 RUN apt-get update && apt-get -y install build-essential libxml2-dev \
@@ -76,7 +77,7 @@ RUN service postgresql start && \
     sudo -u postgres createuser -s nominatim && \
     sudo -u postgres createuser -SDR www-data && \
     service postgresql start && \
-    su nominatim -c './utils/setup.php --osm-file $PBF --all --threads 2' && \
+    su nominatim -c './utils/setup.php --osm-file $PBF --all --osm2pgsql-cache $CACHE --threads 8' && \
     ./utils/setup.php --create-website /var/www/nominatim
 
 # Now, safety first.
