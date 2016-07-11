@@ -7,7 +7,7 @@ MAINTAINER John Nelson <jbn@abreka.com>
 #     --build-arg PBF=your.pbf
 # to the `docker build`.
 ARG PBF=planet-latest.osm.pbf
-ARG CACHE=60000
+ARG CACHE_SIZE=60000
 
 # Install nessessary package dependencies for Nominatim.
 RUN apt-get update && apt-get -y install build-essential libxml2-dev \
@@ -51,6 +51,11 @@ ADD local.php /app/nominatim/settings/local.php
 WORKDIR /app/nominatim
 RUN ./configure && make
 
+# Wikipedia rankings & GB postal codes
+RUN wget --output-document=data/wikipedia_article.sql.bin http://www.nominatim.org/data/wikipedia_article.sql.bin \
+    wget --output-document=data/wikipedia_redirect.sql.bin http://www.nominatim.org/data/wikipedia_redirect.sql.bin \
+    wget --output-document=data/gb_postcode_data.sql.gz http://www.nominatim.org/data/gb_postcode_data.sql.gz
+
 USER root
 
 WORKDIR /app/nominatim
@@ -77,7 +82,7 @@ RUN service postgresql start && \
     sudo -u postgres createuser -s nominatim && \
     sudo -u postgres createuser -SDR www-data && \
     service postgresql start && \
-    su nominatim -c './utils/setup.php --osm-file $PBF --all --osm2pgsql-cache $CACHE --threads 8' && \
+    su nominatim -c './utils/setup.php --osm-file $PBF --all --osm2pgsql-cache $CACHE_SIZE --threads 8' && \
     ./utils/setup.php --create-website /var/www/nominatim
 
 # Now, safety first.
