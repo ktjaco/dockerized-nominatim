@@ -7,7 +7,7 @@ MAINTAINER John Nelson <jbn@abreka.com>
 #     --build-arg PBF=your.pbf
 # to the `docker build`.
 ARG PBF=planet-latest.osm.pbf
-ARG CACHE_SIZE=60000
+ARG CACHE_SIZE=50000
 
 # Install nessessary package dependencies for Nominatim.
 RUN apt-get update && apt-get -y install build-essential libxml2-dev \
