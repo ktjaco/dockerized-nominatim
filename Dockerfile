@@ -18,8 +18,6 @@ RUN apt-get update && apt-get -y install build-essential libxml2-dev \
     postgresql postgis postgresql-contrib postgresql-9.3-postgis-2.1 \
     postgresql-server-dev-9.3 wget
 
-RUN sudo swapoff -a
-
 # Add my shell scripts.
 ADD start.sh /root/start.sh
 ADD postgres_install_time.sh /root/postgres_install_time.sh
