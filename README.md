@@ -6,7 +6,7 @@ For a few projects, I wanted to do bulk geocoding. I didn't want to abuse the [O
 # Installation
 
 ```sh
-git clone https://github.com/jbn/dockerized-nominatim.git
+git clone https://github.com/ktjaco/dockerized-nominatim.git
 cd dockerized-nominatim
 
 # Get your extract locally. In case there is a problem, 
